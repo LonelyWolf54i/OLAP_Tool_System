@@ -77,6 +77,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelPerson = new javax.swing.JPanel();
         panelSales = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         panelMenu = new javax.swing.JPanel();
         btnInicio = new javax.swing.JButton();
         btnSales = new javax.swing.JButton();
@@ -155,6 +158,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelSales.setMaximumSize(new java.awt.Dimension(700, 430));
         panelSales.setMinimumSize(new java.awt.Dimension(700, 430));
         panelSales.setPreferredSize(new java.awt.Dimension(700, 430));
+        panelSales.setLayout(new java.awt.GridBagLayout());
 
         btnSave.setBackground(new java.awt.Color(0, 153, 153));
         btnSave.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -170,23 +174,44 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(318, 80, 0, 51);
+        panelSales.add(btnSave, gridBagConstraints);
 
-        javax.swing.GroupLayout panelSalesLayout = new javax.swing.GroupLayout(panelSales);
-        panelSales.setLayout(panelSalesLayout);
-        panelSalesLayout.setHorizontalGroup(
-            panelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSalesLayout.createSequentialGroup()
-                .addContainerGap(559, Short.MAX_VALUE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
-        );
-        panelSalesLayout.setVerticalGroup(
-            panelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSalesLayout.createSequentialGroup()
-                .addContainerGap(348, Short.MAX_VALUE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
-        );
+        jCheckBox1.setText("Country");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 40, 0, 0);
+        panelSales.add(jCheckBox1, gridBagConstraints);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 419;
+        gridBagConstraints.ipady = 339;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(12, 40, 25, 0);
+        panelSales.add(jScrollPane1, gridBagConstraints);
 
         panelAcciones.add(panelSales, "card2");
 
@@ -517,6 +542,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnSales;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbBoxServers;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -524,6 +550,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelHome;
     private javax.swing.JPanel panelMenu;
