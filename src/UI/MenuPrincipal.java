@@ -76,10 +76,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelProduction = new javax.swing.JPanel();
         panelPerson = new javax.swing.JPanel();
         panelSales = new javax.swing.JPanel();
-        btnSave = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel7 = new javax.swing.JPanel();
+        btnSave = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
         panelMenu = new javax.swing.JPanel();
         btnInicio = new javax.swing.JButton();
         btnSales = new javax.swing.JButton();
@@ -160,33 +169,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelSales.setPreferredSize(new java.awt.Dimension(700, 430));
         panelSales.setLayout(new java.awt.GridBagLayout());
 
-        btnSave.setBackground(new java.awt.Color(0, 153, 153));
-        btnSave.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnSave.setForeground(new java.awt.Color(0, 0, 0));
-        btnSave.setText("Guardar");
-        btnSave.setBorderPainted(false);
-        btnSave.setMaximumSize(new java.awt.Dimension(90, 40));
-        btnSave.setMinimumSize(new java.awt.Dimension(90, 40));
-        btnSave.setPreferredSize(new java.awt.Dimension(90, 40));
-        btnSave.setRequestFocusEnabled(false);
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(318, 80, 0, 51);
-        panelSales.add(btnSave, gridBagConstraints);
-
-        jCheckBox1.setText("Country");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 40, 0, 0);
-        panelSales.add(jCheckBox1, gridBagConstraints);
-
+        jTable1.setBackground(new java.awt.Color(0, 153, 153));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -202,16 +185,120 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 419;
-        gridBagConstraints.ipady = 339;
+        gridBagConstraints.ipadx = 345;
+        gridBagConstraints.ipady = 246;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 40, 25, 0);
+        gridBagConstraints.insets = new java.awt.Insets(12, 37, 18, 0);
         panelSales.add(jScrollPane1, gridBagConstraints);
+
+        jPanel4.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel4.setMinimumSize(new java.awt.Dimension(127, 84));
+        jPanel4.setName(""); // NOI18N
+        jPanel4.setLayout(new java.awt.GridBagLayout());
+
+        jPanel6.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
+
+        jCheckBox1.setBackground(new java.awt.Color(1, 86, 118));
+        jCheckBox1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBox1.setText("Country");
+        jCheckBox1.setRequestFocusEnabled(false);
+        jPanel6.add(jCheckBox1);
+
+        jCheckBox2.setBackground(new java.awt.Color(1, 86, 118));
+        jCheckBox2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jCheckBox2.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBox2.setText("Category");
+        jCheckBox2.setRequestFocusEnabled(false);
+        jPanel6.add(jCheckBox2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel4.add(jPanel6, gridBagConstraints);
+
+        jPanel5.setBackground(new java.awt.Color(1, 86, 118));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Year: ");
+        jPanel5.add(jLabel4);
+
+        jComboBox2.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2005", "2006", "2007", "2008" }));
+        jComboBox2.setMaximumSize(new java.awt.Dimension(75, 26));
+        jComboBox2.setMinimumSize(new java.awt.Dimension(75, 26));
+        jComboBox2.setPreferredSize(new java.awt.Dimension(75, 26));
+        jComboBox2.setRequestFocusEnabled(false);
+        jPanel5.add(jComboBox2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel4.add(jPanel5, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = -2;
+        gridBagConstraints.insets = new java.awt.Insets(8, 37, 0, 0);
+        panelSales.add(jPanel4, gridBagConstraints);
+
+        jPanel7.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel7.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
+
+        btnSave.setBackground(new java.awt.Color(0, 153, 153));
+        btnSave.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
+        btnSave.setText("Query");
+        btnSave.setBorderPainted(false);
+        btnSave.setMaximumSize(new java.awt.Dimension(90, 40));
+        btnSave.setMinimumSize(new java.awt.Dimension(90, 40));
+        btnSave.setPreferredSize(new java.awt.Dimension(90, 40));
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnSave);
+
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Report");
+        jButton1.setBorderPainted(false);
+        jButton1.setMaximumSize(new java.awt.Dimension(90, 40));
+        jButton1.setMinimumSize(new java.awt.Dimension(90, 40));
+        jButton1.setPreferredSize(new java.awt.Dimension(90, 40));
+        jPanel7.add(jButton1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 21;
+        gridBagConstraints.insets = new java.awt.Insets(12, 45, 0, 142);
+        panelSales.add(jPanel7, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Query net sale by: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(19, 37, 0, 0);
+        panelSales.add(jLabel5, gridBagConstraints);
 
         panelAcciones.add(panelSales, "card2");
 
@@ -487,7 +574,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
              */
-            if (false) {
+            if (true) {
                 javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
             } else {
                 try {
@@ -495,7 +582,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         System.out.println(info.getName());                    
                     }
                     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                        if ("Windows".equals(info.getName())) {
+                        if ("Nimbus".equals(info.getName())) {
                             javax.swing.UIManager.setLookAndFeel(info.getClassName());
                             break;
                         }
@@ -542,14 +629,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnSales;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbBoxServers;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JPanel panelAcciones;
