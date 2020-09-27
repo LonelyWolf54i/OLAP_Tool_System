@@ -13,10 +13,10 @@ public class myConnection {
         try {
             Connection con = null;
             
-            String strCon = "jdbc:sqlserver://"+serverName[0]+"\\"+serverName[1]+":1433;databaseName=Proyecto";
+            String strCon = "jdbc:sqlserver://"+serverName[0]+"\\"+serverName[1]+":1433;databaseName=AdventureWorks2008R2_OLAP";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             try {
-                con = DriverManager.getConnection(strCon,"sa","2468");
+                con = DriverManager.getConnection(strCon,"sa","1234");
             } catch (SQLException ex) {
                 Logger.getLogger(myConnection.class.getName()).log(Level.SEVERE, null, ex);
             }

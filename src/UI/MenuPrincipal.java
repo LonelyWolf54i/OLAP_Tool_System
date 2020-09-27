@@ -1,8 +1,6 @@
 package UI;
 
-import dao.daoEvento;
-import java.awt.Color;
-import java.awt.Image;
+import dao.myConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -13,6 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,10 +24,17 @@ import java.sql.PreparedStatement;
  */
 public class MenuPrincipal extends javax.swing.JFrame {
 
+    DefaultTableModel sales_table;
+    DefaultTableModel production_table;
+    DefaultTableModel person_table;
+
     /**
      * Creates new form MenuPrincipal
      */
     public MenuPrincipal() throws UnknownHostException {
+        sales_table = new DefaultTableModel(0, 0);
+        production_table = new DefaultTableModel(0, 0);
+        person_table = new DefaultTableModel(0, 0);
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
             initComponents();
@@ -36,29 +42,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
             panelHome.setVisible(true);
             String serverName[] = {hostName, "SQLEXPRESS"};
             Connection con = ConnectToDatabase(serverName);
-            ResultSet rs = con.getMetaData().getCatalogs();
-            while (rs.next()) {
-                System.out.println(rs.getString(1));
-            }
-            System.out.println("");
-            PreparedStatement ps = con.prepareStatement("SELECT\n"
-                    + "            SERVERPROPERTY('MachineName') AS [ServerName], \n"
-                    + "			SERVERPROPERTY('ServerName') AS [ServerInstanceName], \n"
-                    + "            SERVERPROPERTY('InstanceName') AS [Instance], \n"
-                    + "            SERVERPROPERTY('Edition') AS [Edition],\n"
-                    + "            SERVERPROPERTY('ProductVersion') AS [ProductVersion], \n"
-                    + "			Left(@@Version, Charindex('-', @@version) - 2) As VersionName");
+            PreparedStatement ps = con.prepareStatement
+                ("SELECT SERVERPROPERTY('MachineName') AS [ServerName], \n"
+                      + "SERVERPROPERTY('ServerName') AS [ServerInstanceName], \n"
+                      + "SERVERPROPERTY('InstanceName') AS [Instance], \n"
+                      + "SERVERPROPERTY('Edition') AS [Edition],\n"
+                      + "SERVERPROPERTY('ProductVersion') AS [ProductVersion], \n"
+                      + "Left(@@Version, Charindex('-', @@version) - 2) As VersionName");
             ResultSet rs2 = ps.executeQuery();
             cmbBoxServers.removeAllItems();
             while (rs2.next()) {
-                System.out.println(rs2.getString(1));
-                System.out.println(rs2.getString(2));
                 cmbBoxServers.addItem(rs2.getString(2));
-                System.out.println(rs2.getString(3));
             }
+            salesButton.setBorderPainted(true);
+            productionButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 204), 3));
+            salesButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 204), 3));
+            personButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 204), 3));
         } catch (SQLException ex) {
             Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /**
@@ -73,36 +76,58 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         panelUniverso = new javax.swing.JPanel();
         panelAcciones = new javax.swing.JPanel();
-        panelProduction = new javax.swing.JPanel();
-        panelPerson = new javax.swing.JPanel();
         panelSales = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        salesTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        countryCheckBox = new javax.swing.JCheckBox();
+        categoryCheckBox = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        yearComboBox = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
-        btnSave = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        queryButton = new javax.swing.JButton();
+        reportButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        panelProduction = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        countryCheckBox_3 = new javax.swing.JCheckBox();
+        categoryCheckBox_3 = new javax.swing.JCheckBox();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        yearComboBox_3 = new javax.swing.JComboBox<>();
+        jPanel11 = new javax.swing.JPanel();
+        queryButton_3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        panelPerson = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        yearComboBox_2 = new javax.swing.JComboBox<>();
+        jPanel15 = new javax.swing.JPanel();
+        queryButton_2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
         panelMenu = new javax.swing.JPanel();
-        btnInicio = new javax.swing.JButton();
-        btnSales = new javax.swing.JButton();
-        btnProduction = new javax.swing.JButton();
-        btnPerson = new javax.swing.JButton();
+        homeButton = new javax.swing.JButton();
+        salesButton = new javax.swing.JButton();
+        productionButton = new javax.swing.JButton();
+        personButton = new javax.swing.JButton();
+        homeButton1 = new javax.swing.JButton();
         panelHome = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnQuery = new javax.swing.JButton();
+        connectButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         cmbBoxServers = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -124,44 +149,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelAcciones.setPreferredSize(new java.awt.Dimension(700, 430));
         panelAcciones.setLayout(new java.awt.CardLayout());
 
-        panelProduction.setBackground(new java.awt.Color(1, 86, 118));
-        panelProduction.setForeground(new java.awt.Color(0, 0, 0));
-        panelProduction.setMaximumSize(new java.awt.Dimension(700, 430));
-        panelProduction.setMinimumSize(new java.awt.Dimension(700, 430));
-        panelProduction.setPreferredSize(new java.awt.Dimension(700, 430));
-
-        javax.swing.GroupLayout panelProductionLayout = new javax.swing.GroupLayout(panelProduction);
-        panelProduction.setLayout(panelProductionLayout);
-        panelProductionLayout.setHorizontalGroup(
-            panelProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        panelProductionLayout.setVerticalGroup(
-            panelProductionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
-        );
-
-        panelAcciones.add(panelProduction, "card3");
-
-        panelPerson.setBackground(new java.awt.Color(1, 86, 118));
-        panelPerson.setForeground(new java.awt.Color(0, 0, 0));
-        panelPerson.setMaximumSize(new java.awt.Dimension(700, 430));
-        panelPerson.setMinimumSize(new java.awt.Dimension(700, 430));
-        panelPerson.setPreferredSize(new java.awt.Dimension(700, 430));
-
-        javax.swing.GroupLayout panelPersonLayout = new javax.swing.GroupLayout(panelPerson);
-        panelPerson.setLayout(panelPersonLayout);
-        panelPersonLayout.setHorizontalGroup(
-            panelPersonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        panelPersonLayout.setVerticalGroup(
-            panelPersonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
-        );
-
-        panelAcciones.add(panelPerson, "card4");
-
         panelSales.setBackground(new java.awt.Color(1, 86, 118));
         panelSales.setForeground(new java.awt.Color(0, 0, 0));
         panelSales.setMaximumSize(new java.awt.Dimension(700, 430));
@@ -169,19 +156,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelSales.setPreferredSize(new java.awt.Dimension(700, 430));
         panelSales.setLayout(new java.awt.GridBagLayout());
 
-        jTable1.setBackground(new java.awt.Color(0, 153, 153));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        salesTable.setBackground(new java.awt.Color(158, 255, 255));
+        salesTable.setModel(sales_table);
+        jScrollPane1.setViewportView(salesTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -204,19 +181,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(1, 86, 118));
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
 
-        jCheckBox1.setBackground(new java.awt.Color(1, 86, 118));
-        jCheckBox1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.setText("Country");
-        jCheckBox1.setRequestFocusEnabled(false);
-        jPanel6.add(jCheckBox1);
+        countryCheckBox.setBackground(new java.awt.Color(1, 86, 118));
+        countryCheckBox.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        countryCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        countryCheckBox.setText("Country");
+        countryCheckBox.setRequestFocusEnabled(false);
+        jPanel6.add(countryCheckBox);
 
-        jCheckBox2.setBackground(new java.awt.Color(1, 86, 118));
-        jCheckBox2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jCheckBox2.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox2.setText("Category");
-        jCheckBox2.setRequestFocusEnabled(false);
-        jPanel6.add(jCheckBox2);
+        categoryCheckBox.setBackground(new java.awt.Color(1, 86, 118));
+        categoryCheckBox.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        categoryCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        categoryCheckBox.setText("Category");
+        categoryCheckBox.setRequestFocusEnabled(false);
+        jPanel6.add(categoryCheckBox);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -231,13 +208,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel4.setText("Year: ");
         jPanel5.add(jLabel4);
 
-        jComboBox2.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2005", "2006", "2007", "2008" }));
-        jComboBox2.setMaximumSize(new java.awt.Dimension(75, 26));
-        jComboBox2.setMinimumSize(new java.awt.Dimension(75, 26));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(75, 26));
-        jComboBox2.setRequestFocusEnabled(false);
-        jPanel5.add(jComboBox2);
+        yearComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        yearComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2005", "2006", "2007", "2008" }));
+        yearComboBox.setMaximumSize(new java.awt.Dimension(75, 26));
+        yearComboBox.setMinimumSize(new java.awt.Dimension(75, 26));
+        yearComboBox.setPreferredSize(new java.awt.Dimension(75, 26));
+        yearComboBox.setRequestFocusEnabled(false);
+        jPanel5.add(yearComboBox);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -255,32 +232,38 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelSales.add(jPanel4, gridBagConstraints);
 
         jPanel7.setBackground(new java.awt.Color(1, 86, 118));
-        jPanel7.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
+        jPanel7.setLayout(new java.awt.GridLayout(3, 1, 0, 10));
 
-        btnSave.setBackground(new java.awt.Color(0, 153, 153));
-        btnSave.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnSave.setForeground(new java.awt.Color(255, 255, 255));
-        btnSave.setText("Query");
-        btnSave.setBorderPainted(false);
-        btnSave.setMaximumSize(new java.awt.Dimension(90, 40));
-        btnSave.setMinimumSize(new java.awt.Dimension(90, 40));
-        btnSave.setPreferredSize(new java.awt.Dimension(90, 40));
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
+        queryButton.setBackground(new java.awt.Color(255, 255, 255));
+        queryButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        queryButton.setForeground(new java.awt.Color(0, 0, 0));
+        queryButton.setText("Query");
+        queryButton.setBorderPainted(false);
+        queryButton.setFocusPainted(false);
+        queryButton.setFocusable(false);
+        queryButton.setMaximumSize(new java.awt.Dimension(90, 40));
+        queryButton.setMinimumSize(new java.awt.Dimension(90, 40));
+        queryButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        queryButton.setRequestFocusEnabled(false);
+        queryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                queryButtonActionPerformed(evt);
             }
         });
-        jPanel7.add(btnSave);
+        jPanel7.add(queryButton);
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 153));
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Report");
-        jButton1.setBorderPainted(false);
-        jButton1.setMaximumSize(new java.awt.Dimension(90, 40));
-        jButton1.setMinimumSize(new java.awt.Dimension(90, 40));
-        jButton1.setPreferredSize(new java.awt.Dimension(90, 40));
-        jPanel7.add(jButton1);
+        reportButton.setBackground(new java.awt.Color(255, 255, 255));
+        reportButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        reportButton.setForeground(new java.awt.Color(0, 0, 0));
+        reportButton.setText("Report");
+        reportButton.setBorderPainted(false);
+        reportButton.setFocusPainted(false);
+        reportButton.setFocusable(false);
+        reportButton.setMaximumSize(new java.awt.Dimension(90, 40));
+        reportButton.setMinimumSize(new java.awt.Dimension(90, 40));
+        reportButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        reportButton.setRequestFocusEnabled(false);
+        jPanel7.add(reportButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -302,6 +285,255 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         panelAcciones.add(panelSales, "card2");
 
+        panelProduction.setBackground(new java.awt.Color(1, 86, 118));
+        panelProduction.setForeground(new java.awt.Color(0, 0, 0));
+        panelProduction.setMaximumSize(new java.awt.Dimension(700, 430));
+        panelProduction.setMinimumSize(new java.awt.Dimension(700, 430));
+        panelProduction.setPreferredSize(new java.awt.Dimension(700, 430));
+        panelProduction.setLayout(new java.awt.GridBagLayout());
+
+        jTable2.setBackground(new java.awt.Color(158, 255, 255));
+        jTable2.setModel(production_table);
+        jScrollPane2.setViewportView(jTable2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 345;
+        gridBagConstraints.ipady = 246;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(12, 37, 18, 0);
+        panelProduction.add(jScrollPane2, gridBagConstraints);
+
+        jPanel8.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel8.setMinimumSize(new java.awt.Dimension(127, 84));
+        jPanel8.setName(""); // NOI18N
+        jPanel8.setLayout(new java.awt.GridBagLayout());
+
+        jPanel9.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.Y_AXIS));
+
+        countryCheckBox_3.setBackground(new java.awt.Color(1, 86, 118));
+        countryCheckBox_3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        countryCheckBox_3.setForeground(new java.awt.Color(255, 255, 255));
+        countryCheckBox_3.setText("Country");
+        countryCheckBox_3.setRequestFocusEnabled(false);
+        jPanel9.add(countryCheckBox_3);
+
+        categoryCheckBox_3.setBackground(new java.awt.Color(1, 86, 118));
+        categoryCheckBox_3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        categoryCheckBox_3.setForeground(new java.awt.Color(255, 255, 255));
+        categoryCheckBox_3.setText("Category");
+        categoryCheckBox_3.setRequestFocusEnabled(false);
+        jPanel9.add(categoryCheckBox_3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel8.add(jPanel9, gridBagConstraints);
+
+        jPanel10.setBackground(new java.awt.Color(1, 86, 118));
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Year: ");
+        jPanel10.add(jLabel6);
+
+        yearComboBox_3.setBackground(new java.awt.Color(255, 255, 255));
+        yearComboBox_3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2005", "2006", "2007", "2008" }));
+        yearComboBox_3.setMaximumSize(new java.awt.Dimension(75, 26));
+        yearComboBox_3.setMinimumSize(new java.awt.Dimension(75, 26));
+        yearComboBox_3.setPreferredSize(new java.awt.Dimension(75, 26));
+        yearComboBox_3.setRequestFocusEnabled(false);
+        jPanel10.add(yearComboBox_3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel8.add(jPanel10, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(8, 37, 0, 0);
+        panelProduction.add(jPanel8, gridBagConstraints);
+
+        jPanel11.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel11.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
+
+        queryButton_3.setBackground(new java.awt.Color(255, 255, 255));
+        queryButton_3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        queryButton_3.setForeground(new java.awt.Color(0, 0, 0));
+        queryButton_3.setText("Query");
+        queryButton_3.setBorderPainted(false);
+        queryButton_3.setFocusPainted(false);
+        queryButton_3.setFocusable(false);
+        queryButton_3.setMaximumSize(new java.awt.Dimension(90, 40));
+        queryButton_3.setMinimumSize(new java.awt.Dimension(90, 40));
+        queryButton_3.setPreferredSize(new java.awt.Dimension(90, 40));
+        queryButton_3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                queryButton_3ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(queryButton_3);
+
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
+        jButton2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Report");
+        jButton2.setBorderPainted(false);
+        jButton2.setFocusPainted(false);
+        jButton2.setFocusable(false);
+        jButton2.setMaximumSize(new java.awt.Dimension(90, 40));
+        jButton2.setMinimumSize(new java.awt.Dimension(90, 40));
+        jButton2.setPreferredSize(new java.awt.Dimension(90, 40));
+        jButton2.setRequestFocusEnabled(false);
+        jPanel11.add(jButton2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 21;
+        gridBagConstraints.insets = new java.awt.Insets(12, 45, 0, 142);
+        panelProduction.add(jPanel11, gridBagConstraints);
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Query number of products by: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(19, 37, 0, 0);
+        panelProduction.add(jLabel7, gridBagConstraints);
+
+        panelAcciones.add(panelProduction, "card2");
+
+        panelPerson.setBackground(new java.awt.Color(1, 86, 118));
+        panelPerson.setForeground(new java.awt.Color(0, 0, 0));
+        panelPerson.setMaximumSize(new java.awt.Dimension(700, 430));
+        panelPerson.setMinimumSize(new java.awt.Dimension(700, 430));
+        panelPerson.setPreferredSize(new java.awt.Dimension(700, 430));
+        panelPerson.setLayout(new java.awt.GridBagLayout());
+
+        jTable3.setBackground(new java.awt.Color(158, 255, 255));
+        jTable3.setModel(person_table);
+        jScrollPane3.setViewportView(jTable3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 345;
+        gridBagConstraints.ipady = 246;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(12, 37, 18, 0);
+        panelPerson.add(jScrollPane3, gridBagConstraints);
+
+        jPanel12.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel12.setMaximumSize(new java.awt.Dimension(128, 35));
+        jPanel12.setMinimumSize(new java.awt.Dimension(128, 35));
+        jPanel12.setName(""); // NOI18N
+        jPanel12.setPreferredSize(new java.awt.Dimension(128, 35));
+        jPanel12.setLayout(new java.awt.GridBagLayout());
+
+        jPanel14.setBackground(new java.awt.Color(1, 86, 118));
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Year: ");
+        jPanel14.add(jLabel8);
+
+        yearComboBox_2.setBackground(new java.awt.Color(255, 255, 255));
+        yearComboBox_2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2005", "2006", "2007", "2008" }));
+        yearComboBox_2.setMaximumSize(new java.awt.Dimension(75, 26));
+        yearComboBox_2.setMinimumSize(new java.awt.Dimension(75, 26));
+        yearComboBox_2.setPreferredSize(new java.awt.Dimension(75, 26));
+        yearComboBox_2.setRequestFocusEnabled(false);
+        jPanel14.add(yearComboBox_2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel12.add(jPanel14, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = -2;
+        gridBagConstraints.insets = new java.awt.Insets(8, 37, 0, 0);
+        panelPerson.add(jPanel12, gridBagConstraints);
+
+        jPanel15.setBackground(new java.awt.Color(1, 86, 118));
+        jPanel15.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
+
+        queryButton_2.setBackground(new java.awt.Color(255, 255, 255));
+        queryButton_2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        queryButton_2.setForeground(new java.awt.Color(0, 0, 0));
+        queryButton_2.setText("Query");
+        queryButton_2.setBorderPainted(false);
+        queryButton_2.setFocusPainted(false);
+        queryButton_2.setFocusable(false);
+        queryButton_2.setMaximumSize(new java.awt.Dimension(90, 40));
+        queryButton_2.setMinimumSize(new java.awt.Dimension(90, 40));
+        queryButton_2.setPreferredSize(new java.awt.Dimension(90, 40));
+        queryButton_2.setRequestFocusEnabled(false);
+        queryButton_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                queryButton_2ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(queryButton_2);
+
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
+        jButton3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(0, 0, 0));
+        jButton3.setText("Report");
+        jButton3.setBorderPainted(false);
+        jButton3.setFocusPainted(false);
+        jButton3.setFocusable(false);
+        jButton3.setMaximumSize(new java.awt.Dimension(90, 40));
+        jButton3.setMinimumSize(new java.awt.Dimension(90, 40));
+        jButton3.setPreferredSize(new java.awt.Dimension(90, 40));
+        jButton3.setRequestFocusEnabled(false);
+        jPanel15.add(jButton3);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 21;
+        gridBagConstraints.insets = new java.awt.Insets(12, 45, 0, 142);
+        panelPerson.add(jPanel15, gridBagConstraints);
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Query number of customers by country");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(19, 37, 0, 0);
+        panelPerson.add(jLabel9, gridBagConstraints);
+
+        panelAcciones.add(panelPerson, "card2");
+
         panelUniverso.add(panelAcciones, java.awt.BorderLayout.CENTER);
 
         panelMenu.setBackground(new java.awt.Color(1, 86, 118));
@@ -314,76 +546,106 @@ public class MenuPrincipal extends javax.swing.JFrame {
         flowLayout1.setAlignOnBaseline(true);
         panelMenu.setLayout(flowLayout1);
 
-        btnInicio.setBackground(new java.awt.Color(255, 255, 255));
-        btnInicio.setForeground(new java.awt.Color(0, 0, 0));
-        btnInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/home_icon.png"))); // NOI18N
-        btnInicio.setBorderPainted(false);
-        btnInicio.setMaximumSize(new java.awt.Dimension(80, 50));
-        btnInicio.setMinimumSize(new java.awt.Dimension(80, 50));
-        btnInicio.setPreferredSize(new java.awt.Dimension(80, 50));
-        btnInicio.setRequestFocusEnabled(false);
-        btnInicio.addMouseListener(new java.awt.event.MouseAdapter() {
+        homeButton.setBackground(new java.awt.Color(255, 255, 255));
+        homeButton.setForeground(new java.awt.Color(0, 0, 0));
+        homeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/home_icon.png"))); // NOI18N
+        homeButton.setBorderPainted(false);
+        homeButton.setFocusPainted(false);
+        homeButton.setFocusable(false);
+        homeButton.setMaximumSize(new java.awt.Dimension(60, 50));
+        homeButton.setMinimumSize(new java.awt.Dimension(60, 50));
+        homeButton.setPreferredSize(new java.awt.Dimension(60, 50));
+        homeButton.setRequestFocusEnabled(false);
+        homeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnInicioMouseClicked(evt);
+                homeButtonMouseClicked(evt);
             }
         });
-        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+        homeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInicioActionPerformed(evt);
+                homeButtonActionPerformed(evt);
             }
         });
-        panelMenu.add(btnInicio);
+        panelMenu.add(homeButton);
 
-        btnSales.setBackground(new java.awt.Color(255, 255, 255));
-        btnSales.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        btnSales.setForeground(new java.awt.Color(0, 0, 0));
-        btnSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/sales_icon_2_1.png"))); // NOI18N
-        btnSales.setText("Sales");
-        btnSales.setBorderPainted(false);
-        btnSales.setMaximumSize(new java.awt.Dimension(115, 50));
-        btnSales.setMinimumSize(new java.awt.Dimension(115, 50));
-        btnSales.setPreferredSize(new java.awt.Dimension(115, 50));
-        btnSales.setRequestFocusEnabled(false);
-        btnSales.addActionListener(new java.awt.event.ActionListener() {
+        salesButton.setBackground(new java.awt.Color(255, 255, 255));
+        salesButton.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        salesButton.setForeground(new java.awt.Color(0, 0, 0));
+        salesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/sales_icon_2_1.png"))); // NOI18N
+        salesButton.setText("Sales");
+        salesButton.setBorderPainted(false);
+        salesButton.setFocusPainted(false);
+        salesButton.setFocusable(false);
+        salesButton.setMaximumSize(new java.awt.Dimension(115, 50));
+        salesButton.setMinimumSize(new java.awt.Dimension(115, 50));
+        salesButton.setPreferredSize(new java.awt.Dimension(115, 50));
+        salesButton.setRequestFocusEnabled(false);
+        salesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalesActionPerformed(evt);
+                salesButtonActionPerformed(evt);
             }
         });
-        panelMenu.add(btnSales);
+        panelMenu.add(salesButton);
 
-        btnProduction.setBackground(new java.awt.Color(255, 255, 255));
-        btnProduction.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        btnProduction.setForeground(new java.awt.Color(0, 0, 0));
-        btnProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/production_icon_2.png"))); // NOI18N
-        btnProduction.setText(" Production");
-        btnProduction.setBorderPainted(false);
-        btnProduction.setMaximumSize(new java.awt.Dimension(165, 50));
-        btnProduction.setMinimumSize(new java.awt.Dimension(165, 50));
-        btnProduction.setPreferredSize(new java.awt.Dimension(165, 50));
-        btnProduction.setRequestFocusEnabled(false);
-        btnProduction.addActionListener(new java.awt.event.ActionListener() {
+        productionButton.setBackground(new java.awt.Color(255, 255, 255));
+        productionButton.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        productionButton.setForeground(new java.awt.Color(0, 0, 0));
+        productionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/production_icon_2.png"))); // NOI18N
+        productionButton.setText(" Production");
+        productionButton.setBorderPainted(false);
+        productionButton.setFocusPainted(false);
+        productionButton.setFocusable(false);
+        productionButton.setMaximumSize(new java.awt.Dimension(165, 50));
+        productionButton.setMinimumSize(new java.awt.Dimension(165, 50));
+        productionButton.setPreferredSize(new java.awt.Dimension(165, 50));
+        productionButton.setRequestFocusEnabled(false);
+        productionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProductionActionPerformed(evt);
+                productionButtonActionPerformed(evt);
             }
         });
-        panelMenu.add(btnProduction);
+        panelMenu.add(productionButton);
 
-        btnPerson.setBackground(new java.awt.Color(255, 255, 255));
-        btnPerson.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        btnPerson.setForeground(new java.awt.Color(0, 0, 0));
-        btnPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/person_icon_2.png"))); // NOI18N
-        btnPerson.setText("Person");
-        btnPerson.setBorderPainted(false);
-        btnPerson.setMaximumSize(new java.awt.Dimension(135, 50));
-        btnPerson.setMinimumSize(new java.awt.Dimension(135, 50));
-        btnPerson.setPreferredSize(new java.awt.Dimension(135, 50));
-        btnPerson.setRequestFocusEnabled(false);
-        btnPerson.addActionListener(new java.awt.event.ActionListener() {
+        personButton.setBackground(new java.awt.Color(255, 255, 255));
+        personButton.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        personButton.setForeground(new java.awt.Color(0, 0, 0));
+        personButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/person_icon_2.png"))); // NOI18N
+        personButton.setText("Person");
+        personButton.setBorderPainted(false);
+        personButton.setFocusPainted(false);
+        personButton.setFocusable(false);
+        personButton.setMaximumSize(new java.awt.Dimension(135, 50));
+        personButton.setMinimumSize(new java.awt.Dimension(135, 50));
+        personButton.setPreferredSize(new java.awt.Dimension(135, 50));
+        personButton.setRequestFocusEnabled(false);
+        personButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPersonActionPerformed(evt);
+                personButtonActionPerformed(evt);
             }
         });
-        panelMenu.add(btnPerson);
+        panelMenu.add(personButton);
+
+        homeButton1.setBackground(new java.awt.Color(255, 255, 255));
+        homeButton1.setForeground(new java.awt.Color(0, 0, 0));
+        homeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/iconfinder_User_Interface-23_2044265.png"))); // NOI18N
+        homeButton1.setBorderPainted(false);
+        homeButton1.setFocusPainted(false);
+        homeButton1.setFocusable(false);
+        homeButton1.setMaximumSize(new java.awt.Dimension(60, 50));
+        homeButton1.setMinimumSize(new java.awt.Dimension(60, 50));
+        homeButton1.setPreferredSize(new java.awt.Dimension(60, 50));
+        homeButton1.setRequestFocusEnabled(false);
+        homeButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homeButton1MouseClicked(evt);
+            }
+        });
+        homeButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeButton1ActionPerformed(evt);
+            }
+        });
+        panelMenu.add(homeButton1);
 
         panelUniverso.add(panelMenu, java.awt.BorderLayout.NORTH);
 
@@ -409,30 +671,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = -295;
         gridBagConstraints.ipady = 41;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(105, 142, 0, 153);
         panelHome.add(jLabel1, gridBagConstraints);
 
-        btnQuery.setBackground(new java.awt.Color(255, 255, 255));
-        btnQuery.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/consulta.png"))); // NOI18N
-        btnQuery.setToolTipText("");
-        btnQuery.setMaximumSize(new java.awt.Dimension(40, 40));
-        btnQuery.setMinimumSize(new java.awt.Dimension(40, 40));
-        btnQuery.setPreferredSize(new java.awt.Dimension(40, 40));
-        btnQuery.addActionListener(new java.awt.event.ActionListener() {
+        connectButton.setBackground(new java.awt.Color(255, 255, 255));
+        connectButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        connectButton.setForeground(new java.awt.Color(0, 0, 0));
+        connectButton.setText("Connect");
+        connectButton.setToolTipText("");
+        connectButton.setBorderPainted(false);
+        connectButton.setFocusPainted(false);
+        connectButton.setFocusable(false);
+        connectButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        connectButton.setMaximumSize(new java.awt.Dimension(100, 40));
+        connectButton.setMinimumSize(new java.awt.Dimension(100, 40));
+        connectButton.setPreferredSize(new java.awt.Dimension(90, 35));
+        connectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQueryActionPerformed(evt);
+                connectButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.insets = new java.awt.Insets(28, 487, 87, 0);
-        panelHome.add(btnQuery, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(28, 245, 87, 0);
+        panelHome.add(connectButton, gridBagConstraints);
 
         jPanel3.setBackground(new java.awt.Color(0, 51, 71));
 
@@ -442,10 +708,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Server: ");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Database: ");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -453,11 +715,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addGap(0, 19, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -465,20 +722,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addContainerGap(26, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 32, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         jPanel3.add(jPanel2);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 71));
-
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setMaximumSize(new java.awt.Dimension(65, 26));
 
         cmbBoxServers.setBackground(new java.awt.Color(255, 255, 255));
         cmbBoxServers.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -492,9 +740,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cmbBoxServers, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbBoxServers, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -504,9 +750,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(cmbBoxServers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(6, 6, 6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 32, Short.MAX_VALUE)))
         );
 
         jPanel3.add(jPanel1);
@@ -514,7 +758,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(31, 169, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(31, 0, 0, 0);
         panelHome.add(jPanel3, gridBagConstraints);
 
         getContentPane().add(panelHome, "card5");
@@ -522,47 +766,248 @@ public class MenuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductionActionPerformed
+    private void productionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productionButtonActionPerformed
+        salesButton.setBorderPainted(false);
+        personButton.setBorderPainted(false);
+        productionButton.setBorderPainted(true);
         panelPerson.setVisible(false);
         panelSales.setVisible(false);
         panelProduction.setVisible(true);
-    }//GEN-LAST:event_btnProductionActionPerformed
+    }//GEN-LAST:event_productionButtonActionPerformed
 
-    private void btnSalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalesActionPerformed
+    private void salesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesButtonActionPerformed
+        productionButton.setBorderPainted(false);
+        personButton.setBorderPainted(false);
+        salesButton.setBorderPainted(true);
         panelProduction.setVisible(false);
         panelPerson.setVisible(false);
         panelSales.setVisible(true);
-    }//GEN-LAST:event_btnSalesActionPerformed
+    }//GEN-LAST:event_salesButtonActionPerformed
 
-    private void btnPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonActionPerformed
+    private void personButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personButtonActionPerformed
+        salesButton.setBorderPainted(false);
+        productionButton.setBorderPainted(false);
+        personButton.setBorderPainted(true);
         panelProduction.setVisible(false);
         panelSales.setVisible(false);
         panelPerson.setVisible(true);
-    }//GEN-LAST:event_btnPersonActionPerformed
+    }//GEN-LAST:event_personButtonActionPerformed
 
-    private void btnInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseClicked
+    private void homeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeButtonMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnInicioMouseClicked
+    }//GEN-LAST:event_homeButtonMouseClicked
 
-    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         panelUniverso.setVisible(false);
         panelHome.setVisible(true);
-    }//GEN-LAST:event_btnInicioActionPerformed
+    }//GEN-LAST:event_homeButtonActionPerformed
 
-    private void btnQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQueryActionPerformed
+    private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
-            panelHome.setVisible(false);
-            panelUniverso.setVisible(true);
-    }//GEN-LAST:event_btnQueryActionPerformed
+        panelHome.setVisible(false);
+        panelUniverso.setVisible(true);
+    }//GEN-LAST:event_connectButtonActionPerformed
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        try {
-            Connection con = ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
-                new daoEvento().insert(con);
-            } catch (SQLException | ClassNotFoundException ex) {
+    private void queryButton_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButton_3ActionPerformed
+        production_table.setColumnCount(0);
+        production_table.getDataVector().clear();
+        Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+        if (panelProduction.isVisible()) {
+            if (countryCheckBox_3.isSelected() && categoryCheckBox_3.isSelected()) {
+                try {
+                    String production_by_country_and_categories = "SELECT ct.Name AS CountryName, prc.Name AS ProductCategory, dt.anio AS 'Year', sum(fs.SalesInUnits) AS SalesInUnits\n"
+                            + "FROM dbo.FactSales fs\n"
+                            + "	INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "	INNER JOIN DimCountryRegion ct ON ct.CountryRegionCode = fs.CountryRegionCode\n"
+                            + "	INNER JOIN DimProductCategory prc ON prc.ProductCategoryID = fs.ProductCategoryID\n"
+                            + "GROUP BY ct.Name, prc.Name, dt.anio\n"
+                            + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
+                            + "ORDER BY  ct.Name, prc.Name, 'Year'";
+                    PreparedStatement ps2 = con.prepareStatement(production_by_country_and_categories);
+                    ResultSet rs2 = ps2.executeQuery();
+                    production_table.addColumn("CountryName");
+                    production_table.addColumn("ProductCategory");
+                    production_table.addColumn("Year");
+                    production_table.addColumn("SalesInUnits");
+                    String row[] = new String[4];
+                    while (rs2.next()) {
+                        row[0] = rs2.getString("CountryName");
+                        row[1] = rs2.getString("ProductCategory");
+                        row[2] = rs2.getString("Year");
+                        row[3] = rs2.getString("SalesInUnits");
+                        production_table.addRow(row);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (countryCheckBox_3.isSelected()) {
+                try {
+                    String production_by_country = "SELECT ct.Name AS CountryName, dt.anio AS 'Year', sum(fs.SalesInUnits) AS SalesInUnits\n"
+                            + "FROM dbo.FactSales fs\n"
+                            + "	INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "	INNER JOIN DimCountryRegion ct ON ct.CountryRegionCode = fs.CountryRegionCode\n"
+                            + "GROUP BY ct.Name, dt.anio\n"
+                            + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
+                            + "ORDER BY ct.Name, 'Year'";
+                    PreparedStatement ps2 = con.prepareStatement(production_by_country);
+                    ResultSet rs2 = ps2.executeQuery();
+                    production_table.addColumn("CountryName");
+                    production_table.addColumn("Year");
+                    production_table.addColumn("SalesInUnits");
+                    String row[] = new String[4];
+                    while (rs2.next()) {
+                        row[0] = rs2.getString("CountryName");
+                        row[1] = rs2.getString("Year");
+                        row[2] = rs2.getString("SalesInUnits");
+                        production_table.addRow(row);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (categoryCheckBox_3.isSelected()) {
+                try {
+                    String production_by_category = "SELECT prc.Name AS ProductCategory, dt.anio AS 'Year', sum(fs.SalesInUnits) AS SalesInUnits\n"
+                            + "FROM dbo.FactSales fs\n"
+                            + "	INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "	INNER JOIN DimProductCategory prc ON prc.ProductCategoryID = fs.ProductCategoryID\n"
+                            + "GROUP BY  prc.Name, dt.anio\n"
+                            + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
+                            + "ORDER BY  prc.Name, 'Year'";
+                    PreparedStatement ps2 = con.prepareStatement(production_by_category);
+                    ResultSet rs2 = ps2.executeQuery();
+                    production_table.addColumn("ProductCategory");
+                    production_table.addColumn("Year");
+                    production_table.addColumn("SalesInUnits");
+                    String row[] = new String[4];
+                    while (rs2.next()) {
+                        row[0] = rs2.getString("ProductCategory");
+                        row[1] = rs2.getString("Year");
+                        row[2] = rs2.getString("SalesInUnits");
+                        production_table.addRow(row);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_queryButton_3ActionPerformed
+
+    private void queryButton_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButton_2ActionPerformed
+        person_table.setColumnCount(0);
+        person_table.getDataVector().clear();
+        Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+        if (panelPerson.isVisible()) {
+            try {
+                String person_by_country = "SELECT ct.Name AS CountryName, dt.anio AS 'Year', COUNT(DISTINCT fs.CustomerID) AS NumberOfCustomers\n"
+                        + "FROM dbo.FactSales fs\n"
+                        + "	INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                        + "	INNER JOIN DimCountryRegion ct ON ct.CountryRegionCode = fs.CountryRegionCode\n"
+                        + "GROUP BY ct.Name, dt.anio\n"
+                        + "Having dt.anio = " + yearComboBox_2.getSelectedItem() + "\n"
+                        + "ORDER BY ct.Name, 'Year'";
+                PreparedStatement ps2 = con.prepareStatement(person_by_country);
+                ResultSet rs2 = ps2.executeQuery();
+                person_table.addColumn("CountryName");
+                person_table.addColumn("Year");
+                person_table.addColumn("NumberOfCustomers");
+                String row[] = new String[4];
+                while (rs2.next()) {
+                    row[0] = rs2.getString("CountryName");
+                    row[1] = rs2.getString("Year");
+                    row[2] = rs2.getString("NumberOfCustomers");
+                    person_table.addRow(row);
+                }
+            } catch (SQLException ex) {
                 Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
-    }//GEN-LAST:event_btnSaveActionPerformed
+        }
+    }//GEN-LAST:event_queryButton_2ActionPerformed
+
+    private void homeButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_homeButton1MouseClicked
+
+    private void homeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_homeButton1ActionPerformed
+
+    private void queryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButtonActionPerformed
+        sales_table.setColumnCount(0);
+        sales_table.getDataVector().clear();
+        try {
+            Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+            if (panelSales.isVisible()) {
+                if (countryCheckBox.isSelected() && categoryCheckBox.isSelected()) {
+                    String sales_by_category_and_country = "SELECT ct.Name AS CountryName, prc.Name AS ProductCategory, dt.anio AS 'Year', FORMAT(SUM(fs.NetSale), 'N2') AS NetSale\n"
+                            + "			FROM dbo.FactSales fs\n"
+                            + "				INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "				INNER JOIN DimCountryRegion ct ON ct.CountryRegionCode = fs.CountryRegionCode\n"
+                            + "				INNER JOIN DimProductCategory prc ON prc.ProductCategoryID = fs.ProductCategoryID\n"
+                            + "			GROUP BY ct.Name, prc.Name, dt.anio\n"
+                            + "			HAVING dt.anio = " + yearComboBox.getSelectedItem() + "\n"
+                            + "			ORDER BY CountryName, ProductCategory, 'Year'";
+                    PreparedStatement ps2 = con.prepareStatement(sales_by_category_and_country);
+                    ResultSet rs2 = ps2.executeQuery();
+                    sales_table.addColumn("CountryName");
+                    sales_table.addColumn("ProductCategory");
+                    sales_table.addColumn("Year");
+                    sales_table.addColumn("NetSale");
+                    String row[] = new String[4];
+                    while (rs2.next()) {
+                        row[0] = rs2.getString("CountryName");
+                        row[1] = rs2.getString("ProductCategory");
+                        row[2] = rs2.getString("Year");
+                        row[3] = rs2.getString("NetSale");
+                        sales_table.addRow(row);
+                    }
+                } else if (countryCheckBox.isSelected()) {
+                    String sales_by_country = "			SELECT ct.Name AS CountryName, dt.anio AS 'Year', FORMAT(SUM(fs.NetSale), 'N2') AS NetSale\n"
+                            + "			FROM dbo.FactSales fs\n"
+                            + "				INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "				INNER JOIN DimCountryRegion ct ON ct.CountryRegionCode = fs.CountryRegionCode\n"
+                            + "			GROUP BY ct.Name, dt.anio\n"
+                            + "			Having dt.anio = " + yearComboBox.getSelectedItem() + "\n"
+                            + "			ORDER BY CountryName, 'Year'";
+                    PreparedStatement ps3 = con.prepareStatement(sales_by_country);
+                    ResultSet rs3 = ps3.executeQuery();
+                    sales_table.addColumn("CountryName");
+                    sales_table.addColumn("Year");
+                    sales_table.addColumn("NetSale");
+                    String row[] = new String[4];
+                    while (rs3.next()) {
+                        row[0] = rs3.getString("CountryName");
+                        row[1] = rs3.getString("Year");
+                        row[2] = rs3.getString("NetSale");
+                        sales_table.addRow(row);
+                    }
+                } else if (categoryCheckBox.isSelected()) {
+                    String sales_by_category = "			SELECT prc.Name AS ProductCategory, dt.anio AS 'Year', FORMAT(SUM(fs.NetSale), 'N2') AS NetSale\n"
+                            + "			FROM dbo.FactSales fs\n"
+                            + "				INNER JOIN DimTime dt ON dt.date_id = fs.date_id\n"
+                            + "				INNER JOIN DimProductCategory prc ON prc.ProductCategoryID = fs.ProductCategoryID\n"
+                            + "			GROUP BY prc.Name, dt.anio\n"
+                            + "			HAVING dt.anio = " + yearComboBox.getSelectedItem() + "\n"
+                            + "			ORDER BY ProductCategory, 'Year'";
+                    PreparedStatement ps3 = con.prepareStatement(sales_by_category);
+                    ResultSet rs3 = ps3.executeQuery();
+                    sales_table.addColumn("CountryName");
+                    sales_table.addColumn("Year");
+                    sales_table.addColumn("NetSale");
+                    String row[] = new String[4];
+                    while (rs3.next()) {
+                        row[0] = rs3.getString("ProductCategory");
+                        row[1] = rs3.getString("Year");
+                        row[2] = rs3.getString("NetSale");
+                        sales_table.addRow(row);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_queryButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -579,7 +1024,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             } else {
                 try {
                     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                        System.out.println(info.getName());                    
+                        System.out.println(info.getName());
                     }
                     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
@@ -614,7 +1059,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             public void run() {
                 try {
                     new MenuPrincipal().setVisible(true);
-                } catch (UnknownHostException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -622,32 +1067,43 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInicio;
-    private javax.swing.JButton btnPerson;
-    private javax.swing.JButton btnProduction;
-    private javax.swing.JButton btnQuery;
-    private javax.swing.JButton btnSales;
-    private javax.swing.JButton btnSave;
+    private javax.swing.JCheckBox categoryCheckBox;
+    private javax.swing.JCheckBox categoryCheckBox_3;
     private javax.swing.JComboBox<String> cmbBoxServers;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton connectButton;
+    private javax.swing.JCheckBox countryCheckBox;
+    private javax.swing.JCheckBox countryCheckBox_3;
+    private javax.swing.JButton homeButton;
+    private javax.swing.JButton homeButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelHome;
     private javax.swing.JPanel panelMenu;
@@ -655,5 +1111,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelProduction;
     private javax.swing.JPanel panelSales;
     private javax.swing.JPanel panelUniverso;
+    private javax.swing.JButton personButton;
+    private javax.swing.JButton productionButton;
+    private javax.swing.JButton queryButton;
+    private javax.swing.JButton queryButton_2;
+    private javax.swing.JButton queryButton_3;
+    private javax.swing.JButton reportButton;
+    private javax.swing.JButton salesButton;
+    private javax.swing.JTable salesTable;
+    private javax.swing.JComboBox<String> yearComboBox;
+    private javax.swing.JComboBox<String> yearComboBox_2;
+    private javax.swing.JComboBox<String> yearComboBox_3;
     // End of variables declaration//GEN-END:variables
 }
