@@ -27,7 +27,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     DefaultTableModel sales_table;
     DefaultTableModel production_table;
     DefaultTableModel person_table;
-
+    Connection queryConnection;
+    
     /**
      * Creates new form MenuPrincipal
      */
@@ -49,10 +50,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
                       + "SERVERPROPERTY('Edition') AS [Edition],\n"
                       + "SERVERPROPERTY('ProductVersion') AS [ProductVersion], \n"
                       + "Left(@@Version, Charindex('-', @@version) - 2) As VersionName");
-            ResultSet rs2 = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             cmbBoxServers.removeAllItems();
-            while (rs2.next()) {
-                cmbBoxServers.addItem(rs2.getString(2));
+            while (rs.next()) {
+                cmbBoxServers.addItem(rs.getString(2));
+            }
+            yearComboBox.removeAllItems();
+            yearComboBox_2.removeAllItems();
+            yearComboBox_3.removeAllItems();
+            PreparedStatement ps2 = con.prepareStatement(
+                "SELECT dt.anio\n"
+              + "FROM DimTime dt\n"
+              + "GROUP BY dt.anio\n"
+            );
+            ResultSet rs2 = ps2.executeQuery();
+            while (rs2.next()) {                
+                yearComboBox.addItem(rs2.getString(1));
+                yearComboBox_2.addItem(rs2.getString(1));
+                yearComboBox_3.addItem(rs2.getString(1));
             }
             salesButton.setBorderPainted(true);
             productionButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 204), 3));
@@ -803,7 +818,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
-        ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+        queryConnection = ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
         panelHome.setVisible(false);
         panelUniverso.setVisible(true);
     }//GEN-LAST:event_connectButtonActionPerformed
@@ -811,7 +826,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void queryButton_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButton_3ActionPerformed
         production_table.setColumnCount(0);
         production_table.getDataVector().clear();
-        Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+        queryConnection = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
         if (panelProduction.isVisible()) {
             if (countryCheckBox_3.isSelected() && categoryCheckBox_3.isSelected()) {
                 try {
@@ -823,7 +838,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "GROUP BY ct.Name, prc.Name, dt.anio\n"
                             + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
                             + "ORDER BY  ct.Name, prc.Name, 'Year'";
-                    PreparedStatement ps2 = con.prepareStatement(production_by_country_and_categories);
+                    PreparedStatement ps2 = queryConnection.prepareStatement(production_by_country_and_categories);
                     ResultSet rs2 = ps2.executeQuery();
                     production_table.addColumn("CountryName");
                     production_table.addColumn("ProductCategory");
@@ -849,7 +864,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "GROUP BY ct.Name, dt.anio\n"
                             + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
                             + "ORDER BY ct.Name, 'Year'";
-                    PreparedStatement ps2 = con.prepareStatement(production_by_country);
+                    PreparedStatement ps2 = queryConnection.prepareStatement(production_by_country);
                     ResultSet rs2 = ps2.executeQuery();
                     production_table.addColumn("CountryName");
                     production_table.addColumn("Year");
@@ -873,7 +888,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "GROUP BY  prc.Name, dt.anio\n"
                             + "Having dt.anio = " + yearComboBox_3.getSelectedItem() + "\n"
                             + "ORDER BY  prc.Name, 'Year'";
-                    PreparedStatement ps2 = con.prepareStatement(production_by_category);
+                    PreparedStatement ps2 = queryConnection.prepareStatement(production_by_category);
                     ResultSet rs2 = ps2.executeQuery();
                     production_table.addColumn("ProductCategory");
                     production_table.addColumn("Year");
@@ -895,7 +910,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void queryButton_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButton_2ActionPerformed
         person_table.setColumnCount(0);
         person_table.getDataVector().clear();
-        Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+        queryConnection = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
         if (panelPerson.isVisible()) {
             try {
                 String person_by_country = "SELECT ct.Name AS CountryName, dt.anio AS 'Year', COUNT(DISTINCT fs.CustomerID) AS NumberOfCustomers\n"
@@ -905,7 +920,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         + "GROUP BY ct.Name, dt.anio\n"
                         + "Having dt.anio = " + yearComboBox_2.getSelectedItem() + "\n"
                         + "ORDER BY ct.Name, 'Year'";
-                PreparedStatement ps2 = con.prepareStatement(person_by_country);
+                PreparedStatement ps2 = queryConnection.prepareStatement(person_by_country);
                 ResultSet rs2 = ps2.executeQuery();
                 person_table.addColumn("CountryName");
                 person_table.addColumn("Year");
@@ -935,7 +950,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         sales_table.setColumnCount(0);
         sales_table.getDataVector().clear();
         try {
-            Connection con = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
+            queryConnection = myConnection.ConnectToDatabase(cmbBoxServers.getSelectedItem().toString().split("\\\\"));
             if (panelSales.isVisible()) {
                 if (countryCheckBox.isSelected() && categoryCheckBox.isSelected()) {
                     String sales_by_category_and_country = "SELECT ct.Name AS CountryName, prc.Name AS ProductCategory, dt.anio AS 'Year', FORMAT(SUM(fs.NetSale), 'N2') AS NetSale\n"
@@ -946,7 +961,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "			GROUP BY ct.Name, prc.Name, dt.anio\n"
                             + "			HAVING dt.anio = " + yearComboBox.getSelectedItem() + "\n"
                             + "			ORDER BY CountryName, ProductCategory, 'Year'";
-                    PreparedStatement ps2 = con.prepareStatement(sales_by_category_and_country);
+                    PreparedStatement ps2 = queryConnection.prepareStatement(sales_by_category_and_country);
                     ResultSet rs2 = ps2.executeQuery();
                     sales_table.addColumn("CountryName");
                     sales_table.addColumn("ProductCategory");
@@ -968,7 +983,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "			GROUP BY ct.Name, dt.anio\n"
                             + "			Having dt.anio = " + yearComboBox.getSelectedItem() + "\n"
                             + "			ORDER BY CountryName, 'Year'";
-                    PreparedStatement ps3 = con.prepareStatement(sales_by_country);
+                    PreparedStatement ps3 = queryConnection.prepareStatement(sales_by_country);
                     ResultSet rs3 = ps3.executeQuery();
                     sales_table.addColumn("CountryName");
                     sales_table.addColumn("Year");
@@ -988,7 +1003,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             + "			GROUP BY prc.Name, dt.anio\n"
                             + "			HAVING dt.anio = " + yearComboBox.getSelectedItem() + "\n"
                             + "			ORDER BY ProductCategory, 'Year'";
-                    PreparedStatement ps3 = con.prepareStatement(sales_by_category);
+                    PreparedStatement ps3 = queryConnection.prepareStatement(sales_by_category);
                     ResultSet rs3 = ps3.executeQuery();
                     sales_table.addColumn("CountryName");
                     sales_table.addColumn("Year");
