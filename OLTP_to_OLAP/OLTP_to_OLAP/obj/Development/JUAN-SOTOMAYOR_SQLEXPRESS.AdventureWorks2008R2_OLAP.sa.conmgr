@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="JUAN-SOTOMAYOR_SQLEXPRESS.AdventureWorks2008R2_OLAP.sa"
+  DTS:DTSID="{08D05BC8-F1EC-469C-AF4B-5ABDF75F966D}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=JUAN-SOTOMAYOR\SQLEXPRESS;User ID=sa;Initial Catalog=AdventureWorks2008R2_OLAP;Provider=SQLNCLI11.1;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAKH21hEdIT0+xb5EokZugaAAAAAACAAAAAAAQZgAAAAEAACAAAAD3VSHlR6Ow8l+5ncIc8EUgWgWGVzSMHNQ0ibhQvAXPqwAAAAAOgAAAAAIAACAAAACBfujui1amVmXDnNoylAhYdBtJxV5AsdxDFjIdQ/eBQnAAAADkTpul+DkjQyRQOrM0jeYUn3ExxUvTZr5Acx4HE1SU+Nm4FDUebROIhdIJp7RNfYtogI27+oCEh//gI8gccjxUVYF4R5nY36jiFnvoUtgza5DvrHs+iFOodAEGaboHExp97PgK9qUsIgOLeRoNByQHQAAAAJmNi/IEvpIFO6Zn1vRfL3PuoayhXa7c3U3dadDLbN8dbVA+XicbCzTrgcOi3hVhJ6lGSBOpzEqLSWH1rmH9RHU=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
